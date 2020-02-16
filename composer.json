@@ -1,0 +1,13 @@
+{
+    "name": "tebe/yii2-inertia",
+    "type": "yii2-extension",
+    "require": {
+        "php": ">=5.6.0",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "tebe\\inertia\\": ""
+        }
+    }
+}

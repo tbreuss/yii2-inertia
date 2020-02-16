@@ -1,2 +1,3 @@
-# inertia-yii2
-The Yii2 adapter for Inertia.js.
+# Inertia.js Yii 2 Adapter
+
+Visit [inertiajs.com](https://inertiajs.com/) to learn more.
