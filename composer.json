@@ -1,5 +1,7 @@
 {
     "name": "tebe/yii2-inertia",
+    "description": "The Yii 2 adapter for Inertia.js",
+    "license": "MIT",    
     "type": "yii2-extension",
     "require": {
         "php": ">=5.6.0",
