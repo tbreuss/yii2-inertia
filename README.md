@@ -4,7 +4,7 @@ With Inertia you are able to build single-page apps using classic server-side ro
 
 ## Demo
 
-<http://pingcrm-yii2.tebe.ch>
+<https://pingcrm-yii2.tebe.ch>
 
 ## Installation
 
@@ -17,12 +17,17 @@ composer require tebe/yii2-inertia:dev-master
 Edit `config/web.php`:
 
 ```php
+<?php
+return [
+    ...
     'bootstrap' => ['inertia'],
     'components' => [
       'inertia' => [
         'class' => 'tebe\inertia\Inertia'
       ]
     ]  
+    ...
+];    
 ```
 
 Extend controllers from tebe\inertia\web\Controller:
