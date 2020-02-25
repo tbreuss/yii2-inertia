@@ -4,25 +4,28 @@ namespace tebe\inertia;
 
 use Yii;
 use yii\base\Application;
-use yii\base\BootstrapInterface;
+use yii\base\Component;
 use yii\web\Request;
 use yii\web\Response;
 
-class Inertia implements BootstrapInterface
+class Inertia extends Component
 {
-    private static $SHARE_KEY = '__inertia__';
-
-    public $view = '@inertia/views/inertia';
-
+    /** @var array */
     public $assetsDirs = [
         '@webroot/css',
         '@webroot/js'
     ];
 
+    /** @var string */
+    public $shareKey = '__inertia__';
+
+    /** @var string */
+    public $view = '@inertia/views/inertia';
+
     /**
-     * @param Application $app
+     * @inheritDoc
      */
-    public function bootstrap($app)
+    public function init()
     {
         Yii::setAlias('@inertia', __DIR__);
 
@@ -32,6 +35,9 @@ class Inertia implements BootstrapInterface
         Yii::$app->response->on(Response::EVENT_BEFORE_SEND, [$this, 'handleResponse']);
     }
 
+    /**
+     * @param $event
+     */
     public function handleResponse($event)
     {
         /** @var Request $request */
@@ -79,7 +85,6 @@ class Inertia implements BootstrapInterface
 
     /**
      * @return string
-     * @todo optimize by using webpack build info
      */
     public function getVersion()
     {
@@ -90,16 +95,22 @@ class Inertia implements BootstrapInterface
         return md5(implode('', $hashes));
     }
 
+    /**
+     * @param array $params
+     */
     public function share(array $params = [])
     {
-        Yii::$app->params[static::$SHARE_KEY] = $params;
+        Yii::$app->params[$this->shareKey] = $params;
     }
 
+    /**
+     * @return array
+     */
     public function getShared()
     {
         $shared = [];
-        if (isset(Yii::$app->params[static::$SHARE_KEY])) {
-            $shared = Yii::$app->params[static::$SHARE_KEY];
+        if (isset(Yii::$app->params[$this->shareKey])) {
+            $shared = Yii::$app->params[$this->shareKey];
         }
         return $shared;
     }
@@ -109,6 +120,7 @@ class Inertia implements BootstrapInterface
      *
      * @param string $directory
      * @return boolean|string
+     * @todo optimize by using webpack build info or a cache
      */
     private function hashDirectory($directory)
     {

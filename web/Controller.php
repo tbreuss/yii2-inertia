@@ -6,13 +6,19 @@ use Yii;
 
 class Controller extends \yii\web\Controller
 {
+    /**
+     * @param string $component
+     * @param array $params
+     * @return array|string
+     * @throws \yii\base\InvalidConfigException
+     */
     public function inertia($component, $params = [])
     {
         $params = [
             'component' => $component,
-            'props' => $this->getProps($params),
-            'url' => $this->getUrl(),
-            'version' => $this->getVersion()
+            'props' => $this->getInertiaProps($params),
+            'url' => $this->getInertiaUrl(),
+            'version' => $this->getInertiaVersion()
         ];
 
         if (Yii::$app->request->headers->has('X-Inertia')) {
@@ -25,7 +31,12 @@ class Controller extends \yii\web\Controller
         ]);
     }
 
-    private function getProps($params = [])
+    /**
+     * @param array $params
+     * @return array
+     * @throws \yii\base\InvalidConfigException
+     */
+    private function getInertiaProps($params = [])
     {
         return array_merge(
             Yii::$app->get('inertia')->getShared(),
@@ -33,13 +44,21 @@ class Controller extends \yii\web\Controller
         );
     }
 
-    private function getUrl()
+    /**
+     * @return string
+     * @throws \yii\base\InvalidConfigException
+     */
+    private function getInertiaUrl()
     {
         $url = Yii::$app->request->getUrl();
         return $url;
     }
 
-    private function getVersion()
+    /**
+     * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     */
+    private function getInertiaVersion()
     {
         return Yii::$app->get('inertia')->getVersion();
     }
