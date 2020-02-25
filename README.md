@@ -38,7 +38,6 @@ Extend controllers from tebe\inertia\web\Controller:
 namespace app\controllers;
 
 use tebe\inertia\web\Controller;
-use yii\filters\AccessControl;
 
 class DemoController extends Controller
 {
