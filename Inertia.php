@@ -12,8 +12,7 @@ class Inertia extends Component
 {
     /** @var array */
     public $assetsDirs = [
-        '@webroot/css',
-        '@webroot/js'
+        '@webroot/assets'
     ];
 
     /** @var string */
