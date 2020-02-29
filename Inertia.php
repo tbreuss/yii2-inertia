@@ -5,6 +5,8 @@ namespace tebe\inertia;
 use Yii;
 use yii\base\Application;
 use yii\base\Component;
+use yii\base\Event;
+use yii\web\Controller;
 use yii\web\Request;
 use yii\web\Response;
 
@@ -19,28 +21,38 @@ class Inertia extends Component
     public $shareKey = '__inertia__';
 
     /** @var string */
-    public $view = '@inertia/views/inertia';
+    public $view = '@tebe/inertia/views/inertia';
 
     /**
      * @inheritDoc
      */
     public function init()
     {
-        Yii::setAlias('@inertia', __DIR__);
-
         // Unset header since at least yii\web\ErrorAction is testing it
         // Yii::$app->request->headers->set('X-Requested-With', null);
 
-        Yii::$app->response->on(Response::EVENT_BEFORE_SEND, [$this, 'handleResponse']);
+        Yii::$app->on(Application::EVENT_AFTER_REQUEST, [$this, 'applicationAfterRequestHandler']);
+        Yii::$app->response->on(Response::EVENT_BEFORE_SEND, [$this, 'responseBeforeSendHandler']);
     }
 
     /**
-     * @param $event
+     * @param Event $event
      */
-    public function handleResponse($event)
+    public function applicationAfterRequestHandler($event)
     {
-        /** @var Request $request */
-        $request = Yii::$app->request;
+        $response = Yii::$app->getResponse();
+        if ($response->headers->has('X-Redirect')) {
+            $url = $response->headers->get('X-Redirect', null, true);
+            $response->headers->set('Location', $url);
+        }
+    }
+
+    /**
+     * @param Event $event
+     */
+    public function responseBeforeSendHandler($event)
+    {
+        $request = Yii::$app->getRequest();
         $method = $request->getMethod();
 
         /** @var Response $response */
@@ -52,7 +64,6 @@ class Inertia extends Component
 
         if ($response->isOk) {
             $response->format = Response::FORMAT_JSON;
-            $response->headers->set('Vary', 'Accept');
             $response->headers->set('X-Inertia', 'true');
         }
 
@@ -62,6 +73,7 @@ class Inertia extends Component
                 if ($version !== $this->getVersion()) {
                     $response->setStatusCode(409);
                     $response->headers->set('X-Inertia-Location', $request->getAbsoluteUrl());
+                    return;
                 }
             }
         }
@@ -73,13 +85,6 @@ class Inertia extends Component
                 }
             }
         }
-
-        if ($response->headers->has('X-Redirect')) {
-            $url = $response->headers->get('X-Redirect', null, true);
-            $response->headers->set('Location', $url);
-            $response->headers->set('X-Redirect', null);
-        }
-
     }
 
     /**
