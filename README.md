@@ -20,13 +20,15 @@ Edit `config/web.php`:
 <?php
 return [
     ...
+    'bootstrap' => ['inertia']
+    ...
     'components' => [
       'inertia' => [
         'class' => 'tebe\inertia\Inertia'
       ]
-    ]  
+    ]
     ...
-];    
+];   
 ```
 
 Extend controllers from tebe\inertia\web\Controller:
