@@ -110,7 +110,6 @@ class Inertia extends Component
         } elseif (is_string($key) && is_array($value)) {
             Yii::$app->params[$this->shareKey] = array_merge($this->getShared(), [$key => $value]);
         }
-        $test = $this->getShared();
     }
 
     /**
