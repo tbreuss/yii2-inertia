@@ -100,23 +100,32 @@ class Inertia extends Component
     }
 
     /**
-     * @param array $params
+     * @param array|string $key
+     * @param array/null $value
      */
-    public function share(array $params = [])
+    public function share($key, $value = null)
     {
-        Yii::$app->params[$this->shareKey] = $params;
+        if (is_array($key)) {
+            Yii::$app->params[$this->shareKey] = array_merge($this->getShared(), $key);
+        } elseif (is_string($key) && is_array($value)) {
+            Yii::$app->params[$this->shareKey] = array_merge($this->getShared(), [$key => $value]);
+        }
+        $test = $this->getShared();
     }
 
     /**
+     * @param string|null $key
      * @return array
      */
-    public function getShared()
+    public function getShared($key = null)
     {
-        $shared = [];
-        if (isset(Yii::$app->params[$this->shareKey])) {
-            $shared = Yii::$app->params[$this->shareKey];
+        if (is_string($key) && isset(Yii::$app->params[$this->shareKey][$key])) {
+            return Yii::$app->params[$this->shareKey][$key];
         }
-        return $shared;
+        if (isset(Yii::$app->params[$this->shareKey])) {
+            return Yii::$app->params[$this->shareKey];
+        }
+        return [];
     }
 
     /**
