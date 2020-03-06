@@ -59,6 +59,9 @@ class Inertia extends Component
         $response = $event->sender;
 
         if (!$request->headers->has('X-Inertia')) {
+            if ($request->enableCsrfValidation) {
+                $request->getCsrfToken(true);
+            }
             return;
         }
 
