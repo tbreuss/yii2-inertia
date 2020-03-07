@@ -35,7 +35,10 @@ return [
         'request' => [
             'cookieValidationKey' => '<cookie_validation_key>',
             'enableCsrfValidation' => false,
-            'enableCsrfCookie' => false
+            'enableCsrfCookie' => false,
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]            
         ]      
     ]
     ...
