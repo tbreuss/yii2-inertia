@@ -74,7 +74,8 @@ class DemoController extends Controller
 
 ## Routing
 
-Use your Yii server-side routes as usual. There is nothing special.
+Use your Yii server-side routes as usual. 
+There is nothing special.
 
 ## CSRF protection
 
@@ -97,6 +98,95 @@ Simply edit `config/web.php` file:
  ```
 
 Please see the [security page](https://inertiajs.com/security) for more details.
+
+### Shared data
+
+The Yii 2 adapter provides a way to preassign shared data for each request. 
+This is typically done outside of your controllers. 
+Shared data will be automatically merged with the page props provided in your controller.
+
+Massive assignment of shared data:  
+
+```php
+<?php
+$shared = [
+    'user' => [
+        'id' => $this->getUser()->id,
+        'first_name' => $this->getUser()->firstName,
+        'last_name' => $this->getUser()->lastName,
+    ],
+    'flash' => $this->getFlashMessages(),
+    'errors' => $this->getFormErrors(),
+    'filters' => $this->getGridFilters()
+];
+Yii::$app->get('inertia')->share($shared);
+```
+
+Shared data for one key:
+
+```php
+<?php
+$user = [
+    'id' => $this->getUser()->id,
+    'first_name' => $this->getUser()->firstName,
+    'last_name' => $this->getUser()->lastName
+];
+Yii::$app->get('inertia')->share('user', $user);
+```
+
+A good strategy when using shared data outside of your controllers is to implement an action filter.
+
+```php
+<?php
+
+namespace app\components;
+
+use yii\base\ActionFilter;
+
+class SharedDataFilter extends ActionFilter
+{
+    public function beforeAction()
+    {
+        $shared = [
+            'user' => $this->getUser(),
+            'flash' => $this->getFlashMessages(),
+            'errors' => $this->getFormErrors()
+        ];
+        Yii::$app->get('inertia')->share($shared);
+        return true;
+    }
+}    
+```
+
+And then use this action filter as a behaviour in your controller.
+
+```php
+<?php
+
+namespace app\controllers;
+
+use app\components\SharedDataFilter;
+use tebe\inertia\web\Controller;
+
+class ContactController extends Controller
+{
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => SharedDataFilter::class
+            ]
+        ];
+    }
+    
+    public function actionIndex()
+    {
+        // your action code
+    }
+}
+```
+
+Please see the [shared data page](https://inertiajs.com/shared-data) for more details.
 
 ## Client-side setup
 
