@@ -34,7 +34,11 @@ class Request extends \yii\web\Request
         } else {
             $data = @unserialize($data);
         }
-
-        return Yii::$app->security->maskToken($data[1]);
+        
+        if (is_array($data) && isset($data[0], $data[1]) && $data[0] === $this->csrfParam) {
+            return Yii::$app->security->maskToken($data[1]);
+        }
+        
+        return null;
     }
 }
