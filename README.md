@@ -45,6 +45,8 @@ return [
 ];   
 ```
 
+Note that CSRF protection is disabled.
+
 ## Controllers
 
 Your backend controllers should extend from `tebe\inertia\web\Controller`.
@@ -76,10 +78,10 @@ Use your Yii server-side routes as usual. There is nothing special.
 
 ## CSRF protection
 
-Yii's CSRF protection is not optimized for Axios.
 Axios is the HTTP library that Inertia uses under the hood.
+Yii's CSRF protection is not optimized for Axios.
 
-The easiest way to implement CSRF protection is using the customized Request component. 
+The easiest way to implement CSRF protection is using the customized `tebe\inertia\web\Request` component. 
 Simply edit `config/web.php` file:
  
  ```php
