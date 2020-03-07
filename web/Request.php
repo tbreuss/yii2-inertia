@@ -6,7 +6,7 @@ use Yii;
 
 class Request extends \yii\web\Request
 {
-    const CSRF_HEADER = 'X-CSRF-TOKEN';
+    const CSRF_HEADER = 'X-XSRF-TOKEN';
 
     public $csrfParam = 'XSRF-TOKEN';
 
