@@ -24,6 +24,7 @@ Edit `config/web.php`:
 
 ```php
 <?php
+
 return [
     ...
     'bootstrap' => ['inertia']
@@ -87,6 +88,7 @@ Simply edit `config/web.php` file:
  
  ```php
  <?php
+ 
  return [
      'components' => [
          'request' => [
@@ -109,6 +111,7 @@ Massive assignment of shared data:
 
 ```php
 <?php
+
 $shared = [
     'user' => [
         'id' => $this->getUser()->id,
@@ -126,6 +129,7 @@ Shared data for one key:
 
 ```php
 <?php
+
 $user = [
     'id' => $this->getUser()->id,
     'first_name' => $this->getUser()->firstName,
