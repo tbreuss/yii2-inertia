@@ -157,7 +157,7 @@ class SharedDataFilter extends ActionFilter
             'errors' => $this->getFormErrors()
         ];
         Yii::$app->get('inertia')->share($shared);
-        return true;
+        return parent::beforeAction($action);
     }
 }    
 ```
