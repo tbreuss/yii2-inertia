@@ -17,7 +17,7 @@ Be sure to follow the installation instructions for the [client-side framework](
 Composer require dependency:
 
 ```sh
-composer require tebe/yii2-inertia:dev-master
+composer require tebe/yii2-inertia
 ```
 
 Edit `config/web.php`:
