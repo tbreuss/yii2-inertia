@@ -22,6 +22,9 @@ class Inertia extends Component
 
     /** @var string */
     public $view = '@tebe/inertia/views/inertia';
+    
+    /** @var string */
+    public $rootElementId = 'app';
 
     /**
      * @inheritDoc

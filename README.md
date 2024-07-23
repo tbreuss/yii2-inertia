@@ -32,6 +32,7 @@ return [
     'components' => [
         'inertia' => [
             'class' => 'tebe\inertia\Inertia'
+            'rootElementId' => 'app' // optional per https://inertiajs.com/client-side-setup#defining-a-root-element
         ],
         'request' => [
             'cookieValidationKey' => '<cookie_validation_key>',
