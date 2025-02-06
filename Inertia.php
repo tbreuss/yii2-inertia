@@ -68,11 +68,6 @@ class Inertia extends Component
             return;
         }
 
-        if ($response->isOk) {
-            $response->format = Response::FORMAT_JSON;
-            $response->headers->set('X-Inertia', 'true');
-        }
-
         if ($method === 'GET') {
             if ($request->headers->has('X-Inertia-Version')) {
                 $version = $request->headers->get('X-Inertia-Version', null, true);
@@ -82,6 +77,11 @@ class Inertia extends Component
                     return;
                 }
             }
+        }
+
+        if ($response->isOk) {
+            $response->format = Response::FORMAT_JSON;
+            $response->headers->set('X-Inertia', 'true');
         }
 
         if ($response->getIsRedirection()) {
